@@ -53,13 +53,17 @@
 (defvar anaconda-mode-connection nil
   "Json Rpc connection to anaconda_mode process.")
 
+(defvar anaconda-mode-python-executable nil
+  "Python executable for anaconda_mode. If nil, uses virtualenv's python.")
+
 (defun anaconda-mode-python ()
   "Detect python executable."
+  (or anaconda-mode-python-executable
   (let ((python (if (eq system-type 'windows-nt) "pythonw" "python"))
         (bin-dir (if (eq system-type 'windows-nt) "Scripts" "bin")))
     (--if-let python-shell-virtualenv-path
         (f-join it bin-dir python)
-      python)))
+      python))))
 
 (defun anaconda-mode-start ()
   "Start anaconda_mode.py server."
